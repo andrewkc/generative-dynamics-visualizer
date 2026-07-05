@@ -1,10 +1,8 @@
 # Lab 3: Generative Dynamics Visualizer
 
-Implementación desde cero de un framework para el entrenamiento, generación y visualización de **Diffusion Models** y **Flow Matching** sobre distribuciones sintéticas bidimensionales utilizando **PyTorch**.
+El visualizador fue desarrollado como parte del **Laboratorio 3: Visualización de dinámicas generativas en 2D**, implementando todos los algoritmos principales desde cero, sin utilizar librerías especializadas para modelos generativos.
 
 El objetivo principal es comparar diferentes dinámicas generativas mediante visualizaciones animadas, permitiendo estudiar tanto los procesos forward como los procesos generativos inversos utilizados por los modelos modernos de generación continua.
-
-El framework fue desarrollado como parte del **Laboratorio 3: Visualización de dinámicas generativas en 2D**, implementando todos los algoritmos principales desde cero, sin utilizar librerías especializadas para modelos generativos.
 
 ---
 
@@ -269,7 +267,7 @@ En este laboratorio se implementan tres tipos de procesos forward:
 - Variance Exploding (VE)
 - sub-Variance Preserving (sub-VP)
 
-Además, el framework soporta dos parametrizaciones del modelo:
+Además, el visualizador soporta dos parametrizaciones del modelo:
 
 - **ε-prediction**
 - **v-prediction**
@@ -314,7 +312,7 @@ Los integradores fueron implementados desde cero y pueden intercambiarse fácilm
 
 # Distribuciones Soportadas
 
-El framework trabaja sobre distribuciones sintéticas bidimensionales.
+El visualizador trabaja sobre distribuciones sintéticas bidimensionales.
 
 Actualmente se implementan las siguientes:
 
