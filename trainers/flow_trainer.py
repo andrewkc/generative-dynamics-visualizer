@@ -1,8 +1,12 @@
 from __future__ import annotations
 import torch
-import torch.nn.functional as F
 from tqdm import tqdm
 
+from flow_matching import (
+    LinearInterpolation,
+    ConstantVectorField,
+    flow_matching_loss,
+)
 
 class FlowTrainer:
 
@@ -16,7 +20,9 @@ class FlowTrainer:
         self.model = model.to(device)
         self.optimizer = optimizer
         self.device = device
-
+        self.interpolation = LinearInterpolation()
+        self.vector_field = ConstantVectorField()
+        
     def train_epoch(
         self,
         dataset,
@@ -41,18 +47,23 @@ class FlowTrainer:
                 device=self.device,
             )
 
-            t_expanded = t.unsqueeze(1)
+            xt = self.interpolation.sample(
+                x0,
+                x1,
+                t,
+            )
 
-            xt = (1.0 - t_expanded) * x0 + t_expanded * x1
-
-            target_velocity = x1 - x0
+            target_velocity = self.vector_field.target(
+                x0,
+                x1,
+            )
 
             prediction = self.model(
                 xt,
                 t,
             )
 
-            loss = F.mse_loss(
+            loss = flow_matching_loss(
                 prediction,
                 target_velocity,
             )

@@ -24,14 +24,12 @@ class ScoreModel:
             t,
         )
 
-        #_, std = self.sde.marginal_prob(
-        #    torch.zeros_like(x),
-        #    t,
-        #)
-        
         std = self.sde.marginal_std(
-           t,
+            t,
         )
+
+        while std.ndim < x.ndim:
+            std = std.unsqueeze(-1)
 
         if self.model.prediction_type == "epsilon":
 
@@ -39,16 +37,10 @@ class ScoreModel:
 
         elif self.model.prediction_type == "velocity":
 
-            #
-            # Placeholder.
-            # Lo implementaremos correctamente cuando
-            # definamos alpha(t).
-            #
-
+            # Placeholder
             epsilon = prediction
 
         else:
-
             raise ValueError("Unknown prediction type.")
 
         return -epsilon / std
