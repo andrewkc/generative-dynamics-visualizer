@@ -24,8 +24,28 @@ class BaseSampler(ABC):
         self,
         n_samples: int,
         steps: int = 100,
+        return_trajectory: bool = False,
     ):
         """
         Generate samples.
+
+        Parameters
+        ----------
+        n_samples
+            Number of generated samples.
+
+        steps
+            Number of integration steps.
+
+        return_trajectory
+            If True, also return all intermediate states.
+
+        Returns
+        -------
+        samples
+
+        or
+
+        samples, trajectory
         """
         pass

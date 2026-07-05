@@ -1,0 +1,12 @@
+seed: 42
+device: auto
+dataset: two_moons
+model: flow_matching
+batch_size: 256
+epochs: 100
+steps_per_epoch: 500
+learning_rate: 0.001
+hidden_dim: 256
+time_embedding_dim: 64
+checkpoint_dir: checkpoints
+checkpoint_name: flow_matching.pt

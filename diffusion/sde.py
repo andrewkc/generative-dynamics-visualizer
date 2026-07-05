@@ -85,6 +85,83 @@ class SDE(ABC):
     ):
         pass
     
+    
+    @torch.no_grad()
+    def sample_forward_trajectory(
+        self,
+        x0: torch.Tensor,
+        steps: int = 100,
+        return_times: bool = False,
+    ):
+        """
+        Simulate the forward SDE using Euler-Maruyama.
+
+        Returns
+        -------
+        trajectory :
+            list[Tensor(N,2)]
+
+        times :
+            Tensor(steps+1)
+            (optional)
+        """
+
+        x = x0.clone()
+
+        trajectory = [x.clone()]
+
+        dt = self.T / steps
+
+        times = torch.linspace(
+            0.0,
+            self.T,
+            steps + 1,
+            device=x.device,
+        )
+
+        for i in range(steps):
+
+            t = torch.full(
+                (x.shape[0],),
+                float(times[i]),
+                device=x.device,
+            )
+
+            drift = self.drift(
+                x,
+                t,
+            )
+
+            diffusion = self.diffusion(
+                t,
+            )
+
+            while diffusion.ndim < x.ndim:
+                diffusion = diffusion.unsqueeze(-1)
+
+            noise = torch.randn_like(x)
+
+            x = (
+                x
+                + drift * dt
+                + diffusion * torch.sqrt(
+                    torch.tensor(
+                        dt,
+                        device=x.device,
+                    )
+                )
+                * noise
+            )
+
+            trajectory.append(
+                x.clone()
+            )
+
+        if return_times:
+            return trajectory, times
+
+        return trajectory
+    
     # ---------------------------------------------------------
     # Perturbation
 
